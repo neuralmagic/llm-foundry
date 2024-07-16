@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from llmfoundry.models.hf import ComposerHFCausalLM, ComposerHFT5
+from llmfoundry.models.sparseml import ComposerSparseAutoModelCausalLM
 from llmfoundry.models.inference_api_wrapper import (
     FMAPICasualLMEvalWrapper,
     FMAPIChatAPIEvalWrapper,
@@ -19,6 +20,7 @@ from llmfoundry.registry import models
 
 models.register('mpt_causal_lm', func=ComposerMPTCausalLM)
 models.register('hf_causal_lm', func=ComposerHFCausalLM)
+models.register('sparseml_causal_lm', func=ComposerSparseAutoModelCausalLM)
 models.register('hf_t5', func=ComposerHFT5)
 models.register('openai_causal_lm', func=OpenAICausalLMEvalWrapper)
 models.register('fmapi_causal_lm', func=FMAPICasualLMEvalWrapper)
@@ -27,6 +29,7 @@ models.register('fmapi_chat', func=FMAPIChatAPIEvalWrapper)
 
 __all__ = [
     'ComposerHFCausalLM',
+    'ComposerSparseAutoModelCausalLM',
     'ComposerHFT5',
     'MPTConfig',
     'MPTPreTrainedModel',

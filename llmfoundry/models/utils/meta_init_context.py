@@ -93,17 +93,34 @@ def init_on_device(device: torch.device, include_buffers: bool = False):
         name: str,
         param: Optional[torch.nn.Parameter],
     ):
+        # print the type of param
+        if param is not None:
+            # Make param have requires_grad=False to avoid unnecessary computation
+            # print(f"register_empty_parameter: {name} {type(param)}")
+            param.requires_grad = False
+        
+        #print(f"register_empty_parameter: {name} {type(param)}")
         old_register_parameter(self, name, param)
         if param is not None:
+            # set requires_grad to False to avoid unnecessary computation
             parameter = self._parameters[name]
             assert parameter is not None
             if isinstance(parameter, DTensor):
-                self._parameters[name] = parameter.to(device)  # type: ignore
+                self._parameters[name] = parameter.to(device)
+
             else:
                 param_cls = type(parameter)
                 kwargs = parameter.__dict__
+                # if name == "weight_zero_point" or name == "input_zero_point":
+                #     self._parameters[name] = param_cls(
+                #         parameter.to(device),
+                #         requires_grad=False,
+                #         **kwargs,
+                #     )
+                # else:
                 self._parameters[name] = param_cls(
                     parameter.to(device),
+                    requires_grad=False,
                     **kwargs,
                 )
 
@@ -117,7 +134,7 @@ def init_on_device(device: torch.device, include_buffers: bool = False):
         if tensor is not None:
             named_buffer = self._buffers[name]
             assert named_buffer is not None
-            self._buffers[name] = named_buffer.to(device)
+            self._buffers[name] = named_buffer.to(device).requires_grad_(False)
 
     # Patch tensor creation
     if include_buffers:

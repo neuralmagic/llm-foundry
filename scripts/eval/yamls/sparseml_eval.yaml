@@ -1,6 +1,6 @@
 variables:
   # If you are using one model, put it here:
-  model_name_or_path: /nm/drive0/linghao/models/models--Qwen--Qwen2-0.5B-Instruct/snapshots/c291d6fce4804a1d39305f388dd32897d1f7acc4
+  model_name_or_path: EleutherAI/gpt-neo-125m
   # otherwise, write a block for each model you want to test in the `models` section
 
   precision: fp32
@@ -13,9 +13,9 @@ models:
 -
   model_name: ${variables.model_name_or_path}
   model:
-    name: hf_causal_lm
+    name: sparseml_causal_lm
     pretrained_model_name_or_path: ${variables.model_name_or_path}
-    init_device: cpu
+    init_device: mixed
     pretrained: true
   tokenizer:
     name: ${variables.model_name_or_path}
@@ -37,7 +37,7 @@ models:
 #       model_max_length: ${variables.max_seq_len}
 
 
-device_eval_batch_size: 1
+device_eval_batch_size: 4
 
 # FSDP config for model sharding
 # fsdp_config:

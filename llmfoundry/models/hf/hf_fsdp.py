@@ -209,6 +209,11 @@ def prepare_hf_causal_lm_model_for_fsdp(
                 if has_parameters or has_buffers:
                     module._fsdp_wrap = True
 
+    # Soemthing to convert to float
+    # Set requires_grad to false for all params
+    # loop over params, if dtype is int change
+
+
     # FSDP Wrap and Activation Checkpoint every model block
     model.fsdp_wrap_fn = lambda module: isinstance(module, block_type)
     model.activation_checkpointing_fn = lambda module: isinstance(
